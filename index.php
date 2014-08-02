@@ -59,7 +59,7 @@
 				printf("<p>Result table</p>");
 				printf("<table>");
 				printf("<tr><th>Vote</th><th>Number of Votes</th></tr>");
-				$query = "SELECT Vote, count(User) AS Votos FROM votos Group BY Juego ORDER BY Votos DESC";
+				$query = "SELECT Vote, count(User) AS Votos FROM votos Group BY Vote  ORDER BY Votos DESC";
 				$cursor = mysqli_query($conexion,$query);
 				while ($fila = mysqli_fetch_assoc($cursor)) {
 					printf("<tr>");
@@ -71,20 +71,19 @@
 			} else 
 			{
 				$username = $user_data['name'];
-				$query = "SELECT * FROM votos WHERE Usuario LIKE '$username'";
+				$query = "SELECT * FROM votos WHERE User LIKE '$username'";
 				$existeUsuario = mysqli_query($conexion,$query);
 				if (mysqli_num_rows($existeUsuario)>0)
 				{
 					printf("<p>You already voted!</p>");
 
 				} else {
-					printf("<form method='post' action='enviarVoto.php'>");
+					printf("<form method='post' action='sendVote.php'>");
 					printf("<p>What is your vote?: <input type='text' name='vote'></p>");
 					printf("<input type='hidden' name='user' value='" . $user_data['name'] . "'>" );
 					printf("<input type='submit'>");
 					printf("</form>");
 				}
-				
 			}
 		}
 		printf("</div>");

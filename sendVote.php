@@ -7,11 +7,15 @@
 <body>
 	<?php
 		require "configuration.php";
-		$user = htmlspecialchars($_POST['user']);
-		$vote = htmlspecialchars( strtolower($_POST['vote']));
+		$user = $_POST['user'];
+		$vote = htmlspecialchars(strtolower($_POST['vote']));
 		$conection = new mysqli($mysql_host,$mysql_user,$mysql_password,$mysql_database);
-		mysqli_query($conexion,"INSERT INTO Results (User,Vote) VALUES('$user','$vote')") or die("<p>Error</p>");
-		printf("<p>Vote sended.</p>");
+		if ($stm = $conection -> prepare("INSERT INTO Results (User,Vote) VALUES(?,?)")) {
+			$stm->bind_param("ss",$user,$vote);
+			$stm->execute();
+			printf("<p>Vote sended.</p>");
+		}
+		$connection.close();
 	?>
 </body>
 </html>
